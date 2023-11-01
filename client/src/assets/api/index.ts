@@ -91,17 +91,7 @@ export const getChatMessages = (chatId: string) => {
   return apiClient.get(`/chat-app/messages/${chatId}`);
 };
 
-export const sendMessage = (
-  chatId: string,
-  content: string,
-  attachments: File[]
-) => {
-  const formData = new FormData();
-  if (content) {
-    formData.append("content", content);
-  }
-  attachments?.map((file) => {
-    formData.append("attachments", file);
-  });
-  return apiClient.post(`/chat-app/messages/${chatId}`, formData);
+export const sendMessage = (chatId: string, content: string) => {
+  const data = { content: content };
+  return apiClient.post(`/chat-app/messages/${chatId}`, data);
 };

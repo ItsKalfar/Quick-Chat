@@ -11,14 +11,9 @@ interface IChatListItem {
 
 interface IChatMessage {
   _id: string;
-  sender: Pick<IUser, "_id" | "avatar" | "email" | "username">;
+  sender: Pick<IUser, "_id" | "email" | "username">;
   content: string;
   chat: string;
-  attachments: {
-    url: string;
-    localPath: string;
-    _id: string;
-  }[];
   createdAt: string;
   updatedAt: string;
 }

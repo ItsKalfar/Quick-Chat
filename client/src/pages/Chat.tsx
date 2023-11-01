@@ -1,4 +1,4 @@
-import { Send, Paperclip, XCircle } from "lucide-react";
+import { Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { getChatMessages, getUserChats, sendMessage } from "../assets/api";
 import { AddChat } from "../components/chat/AddChat";
@@ -11,6 +11,7 @@ import { LocalStorage } from "../utils/LocalStorage";
 import { requestHandler } from "../utils/RequestHandler";
 import { getChatObjectMetadata } from "../utils/ChatMetadata";
 import { Button } from "../components/Button";
+import UserImage from "../assets/images/user.png";
 
 const CONNECTED_EVENT = "connected";
 const DISCONNECT_EVENT = "disconnect";
@@ -50,8 +51,6 @@ export const ChatPage = () => {
 
   const [message, setMessage] = useState(""); // To store the currently typed message
   const [localSearchQuery, setLocalSearchQuery] = useState(""); // For local search functionality
-
-  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
 
   /**
    *  A  function to update the last message of a specified chat to update the chat list
@@ -132,14 +131,12 @@ export const ChatPage = () => {
       async () =>
         await sendMessage(
           currentChat.current?._id || "", // Chat ID or empty string if not available
-          message, // Actual text message
-          attachedFiles // Any attached files
+          message // Actual text message
         ),
       null,
       // On successful message sending, clear the message input and attached files, then update the UI
       (res) => {
         setMessage(""); // Clear the message input
-        setAttachedFiles([]); // Clear the list of attached files
         setMessages((prev) => [res.data, ...prev]); // Update messages in the UI
         updateChatLastMessage(currentChat.current?._id || "", res.data); // Update the last message in the chat
       },
@@ -419,7 +416,7 @@ export const ChatPage = () => {
         <div className="w-2/3 border-l-[0.1px] border-gray-700">
           {currentChat.current && currentChat.current._id ? (
             <>
-              <div className="p-4 sticky bg-gray-800 text-white top-0 z-20 flex justify-between items-center w-full">
+              <div className="p-4 fixed bg-gray-800 text-white top-0 z-20 flex justify-between items-center w-full">
                 <div className="flex justify-start items-center w-max gap-3">
                   {currentChat.current.isGroupChat ? (
                     <div className="w-14 relative h-14 flex-shrink-0 flex justify-start items-center flex-nowrap">
@@ -429,7 +426,7 @@ export const ChatPage = () => {
                           return (
                             <img
                               key={participant._id}
-                              src={participant.avatar.url}
+                              src={UserImage}
                               className={`w-11 h-11 border-4 border-gray-800 rounded-full absolute ${
                                 i === 0
                                   ? "left-0 z-30"
@@ -446,9 +443,7 @@ export const ChatPage = () => {
                   ) : (
                     <img
                       className="h-14 w-14 rounded-full flex flex-shrink-0 object-cover"
-                      src={
-                        getChatObjectMetadata(currentChat.current, user!).avatar
-                      }
+                      src={UserImage}
                     />
                   )}
                   <div>
@@ -465,11 +460,7 @@ export const ChatPage = () => {
                 </div>
               </div>
               <div
-                className={`p-8 bg-gray-900 overflow-y-auto flex flex-col-reverse gap-6 w-full scrollbar-none ${
-                  attachedFiles.length > 0
-                    ? "h-[calc(100vh-336px)]"
-                    : "h-[calc(100vh-176px)]"
-                }`}
+                className={`p-8 bg-gray-900 overflow-y-auto flex flex-col-reverse gap-6 w-full h-[calc(100%-88px)] scrollbar-none`}
                 id="message-window"
               >
                 {loadingMessages ? (
@@ -492,57 +483,7 @@ export const ChatPage = () => {
                   </>
                 )}
               </div>
-              {attachedFiles.length > 0 && (
-                <div className="grid gap-4 grid-cols-5 p-4 justify-start max-w-fit">
-                  {attachedFiles.map((file, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className="group w-32 h-32 relative aspect-square rounded cursor-pointer"
-                      >
-                        <div className="absolute inset-0 flex justify-center items-center w-full h-full bg-black/40 group-hover:opacity-100 opacity-0 transition-opacity ease-in-out duration-150">
-                          <button
-                            onClick={() => {
-                              setAttachedFiles(
-                                attachedFiles.filter((_, ind) => ind !== i)
-                              );
-                            }}
-                            className="absolute -top-2 -right-2"
-                          >
-                            <XCircle className="h-6 w-6 text-white" />
-                          </button>
-                        </div>
-                        <img
-                          className="h-full rounded w-full object-cover"
-                          src={URL.createObjectURL(file)}
-                          alt="attachment"
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-              <div className="sticky bg-gray-800 top-full p-4 flex justify-between items-center w-full gap-2 border-t-[0.1px] border-gray-800">
-                <input
-                  hidden
-                  id="attachments"
-                  type="file"
-                  value=""
-                  multiple
-                  max={5}
-                  onChange={(e) => {
-                    if (e.target.files) {
-                      setAttachedFiles([...e.target.files]);
-                    }
-                  }}
-                />
-                <label
-                  htmlFor="attachments"
-                  className="p-4 rounded-full bg-dark hover:bg-secondary"
-                >
-                  <Paperclip className="w-6 h-6 text-white" />
-                </label>
-
+              <div className="fixed bg-gray-800 bottom-0 p-4 flex justify-between items-center w-full gap-2 border-t-[0.1px] border-gray-800 z-20">
                 <input
                   placeholder="Message"
                   className="w-full border-gray-700 border-2 rounded px-2.5 py-2 bg-transparent focus:bg-transparent focus:outline-none text-white"
@@ -556,7 +497,7 @@ export const ChatPage = () => {
                 />
                 <button
                   onClick={sendChatMessage}
-                  disabled={!message && attachedFiles.length <= 0}
+                  disabled={!message}
                   className="p-4 rounded-full bg-dark hover:bg-secondary disabled:opacity-50"
                 >
                   <Send className="w-6 h-6 text-white" />

@@ -14,6 +14,7 @@ import { Button } from "../Button";
 import { SelectItem } from "../Select";
 import { Pencil, Trash, X, Users, UserPlus } from "lucide-react";
 import { toast } from "react-hot-toast";
+import UserImage from "../../assets/images/user.png";
 
 export const GroupChatDetails: React.FC<{
   open: boolean;
@@ -193,16 +194,6 @@ export const GroupChatDetails: React.FC<{
             <div className="relative mt-6 flex-1 px-4 sm:px-6">
               <div className="flex flex-col justify-center items-start">
                 <div className="flex pl-16 justify-center items-center relative w-full h-max gap-3">
-                  {groupDetails?.participants.slice(0, 3).map((p) => {
-                    return (
-                      <img
-                        className="w-20 h-20 -ml-16 rounded-full outline outline-4 outline-gray-800"
-                        key={p._id}
-                        src={p.avatar.url}
-                        alt="avatar"
-                      />
-                    );
-                  })}
                   {groupDetails?.participants &&
                     groupDetails?.participants.length > 3 && (
                       <p>+{groupDetails?.participants.length - 3}</p>
@@ -252,7 +243,7 @@ export const GroupChatDetails: React.FC<{
                             <div className="flex justify-start items-start gap-3 w-full">
                               <img
                                 className="h-12 w-12 rounded-full"
-                                src={part.avatar.url}
+                                src={UserImage}
                               />
                               <div>
                                 <p className="text-white font-semibold text-sm inline-flex items-center w-full">

@@ -45,7 +45,6 @@ export const registerUser = asyncHandler(async (req, res) => {
       email,
       password,
       username,
-      isEmailVerified: false,
       role: role || UserRolesEnum.USER,
     });
 

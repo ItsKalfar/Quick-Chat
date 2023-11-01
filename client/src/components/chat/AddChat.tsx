@@ -12,6 +12,8 @@ import { SelectItem } from "../Select";
 import { toast } from "react-hot-toast";
 import { Switch } from "@headlessui/react";
 
+import UserImage from "../../assets/images/user.png";
+
 export const AddChat: React.FC<{
   onSuccess: (chat: IChatListItem) => void;
   open: boolean;
@@ -201,7 +203,7 @@ export const AddChat: React.FC<{
                       >
                         <img
                           className="h-6 w-6 rounded-full object-cover"
-                          src={participant.avatar.url}
+                          src={UserImage}
                         />
                         <p>{participant.username}</p>
                         <XCircle

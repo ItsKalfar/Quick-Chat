@@ -1,4 +1,4 @@
-import { Paperclip, MoreVertical, Trash, Info } from "lucide-react";
+import { MoreVertical, Trash, Info } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import { deleteOneOnOneChat } from "../../assets/api";
@@ -6,6 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { requestHandler } from "../../utils/RequestHandler";
 import { getChatObjectMetadata } from "../../utils/ChatMetadata";
 import { GroupChatDetails } from "./GroupChatDetails";
+import UserImage from "../../assets/images/user.png";
 
 export const ChatItem: React.FC<{
   chat: IChatListItem;
@@ -105,7 +106,7 @@ export const ChatItem: React.FC<{
                 return (
                   <img
                     key={participant._id}
-                    src={participant.avatar.url}
+                    src={UserImage}
                     className={`w-8 h-8 border-[1px] border-gray-800 rounded-full absolute outline outline-2  group-hover:outline-secondary ${
                       i === 0
                         ? "left-0 z-[3]"
@@ -120,10 +121,7 @@ export const ChatItem: React.FC<{
               })}
             </div>
           ) : (
-            <img
-              src={getChatObjectMetadata(chat, user!).avatar}
-              className="w-12 h-12 rounded-full"
-            />
+            <img src={UserImage} className="w-12 h-12 rounded-full" />
           )}
         </div>
         <div className="w-full">
@@ -131,10 +129,6 @@ export const ChatItem: React.FC<{
             {getChatObjectMetadata(chat, user!).title}
           </p>
           <div className="w-full inline-flex items-center text-left">
-            {chat.lastMessage && chat.lastMessage.attachments.length > 0 ? (
-              // If last message is an attachment show paperclip
-              <Paperclip className="text-white h-3 w-3 mr-2 flex flex-shrink-0" />
-            ) : null}
             <small className="text-white truncate-1 text-sm text-ellipsis inline-flex items-center">
               {getChatObjectMetadata(chat, user!).lastMessage.slice(0, 30)}
             </small>
