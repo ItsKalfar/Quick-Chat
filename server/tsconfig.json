@@ -8,6 +8,7 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
 
     /* Type Checking */
     "strict": true,
@@ -17,5 +18,6 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }
