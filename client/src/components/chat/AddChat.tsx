@@ -10,7 +10,7 @@ import { requestHandler } from "../../utils/RequestHandler";
 import { Button } from "../Button";
 import { SelectItem } from "../Select";
 import { toast } from "react-hot-toast";
-import { Switch } from "@headlessui/react";
+import { Switch } from "@radix-ui/react-switch";
 
 import UserImage from "../../assets/images/user.png";
 
@@ -120,10 +120,10 @@ export const AddChat: React.FC<{
             </button>
           </div>
           <div>
-            <Switch.Group as="div" className="flex items-center my-5">
+            <div className="flex items-center my-5">
               <Switch
                 checked={isGroupChat}
-                onChange={setIsGroupChat}
+                onCheckedChange={setIsGroupChat}
                 className={`relative outline outline-[1px] outline-white inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-0 ${
                   isGroupChat ? "bg-gray-900" : "bg-gray-600"
                 }`}
@@ -139,7 +139,7 @@ export const AddChat: React.FC<{
                           "pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out`}
                 />
               </Switch>
-              <Switch.Label as="span" className="ml-3 text-sm">
+              <p className="ml-3 text-sm">
                 <span
                   className={`
                           font-medium text-white ${
@@ -149,8 +149,8 @@ export const AddChat: React.FC<{
                 >
                   Is it a group chat?
                 </span>{" "}
-              </Switch.Label>
-            </Switch.Group>
+              </p>
+            </div>
           </div>
           <div>
             {isGroupChat && (
